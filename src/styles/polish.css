@@ -272,6 +272,7 @@ html:not(.jv-no-polish) .dropdown-menu {
 
 html:not(.jv-no-polish) .ic-Action-header__Heading,
 html:not(.jv-no-polish) #content h1.page-title {
+  color: var(--ic-brand-global-nav-bgd, #273540);
   font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -284,11 +285,12 @@ html:not(.jv-no-polish) .user_content > :is(p, ul, ol, blockquote, h1, h2, h3, h
   max-width: 46rem;
 }
 /* Instructor headings painted as solid colour bars (inline background) become
-   plain bold headings with a hairline underneath. */
+   plain bold headings with a slim accent bar at the left. */
 html:not(.jv-no-polish) .user_content :is(h1, h2, h3, h4, h5, h6)[style*="background"] {
   margin: 2rem 0 0.75rem !important;
-  padding: 0 0 0.5rem !important;
-  border-bottom: 1px solid #e3e6e9;
+  padding: 2px 0 2px 10px !important;
+  border-left: 3px solid var(--ic-link-color, #286dc0);
+  border-radius: 2px;
   background: none !important;
   color: #273540 !important;
   font-size: 1.2rem;
@@ -311,8 +313,25 @@ html:not(.jv-no-polish) .user_content a:hover {
 
 /* ---------- Right-hand column ---------- */
 
-html:not(.jv-no-polish) #right-side-wrapper {
-  border-left: 1px solid #e3e6e9;
+/* Three clean columns: the right column's divider runs the full height of the
+   page (up past the breadcrumb bar), and the breadcrumb bar loses its own
+   horizontal rule, so there's no sidebar-under-a-topbar-under-a-sidebar. */
+html:not(.jv-no-polish) .ic-app-nav-toggle-and-crumbs {
+  border-bottom: 0;
+}
+@media (min-width: 768px) {
+  html:not(.jv-no-polish) #right-side-wrapper {
+    border-left: 1px solid #e3e6e9;
+  }
+  html:not(.jv-no-polish) .ic-app-nav-toggle-and-crumbs ~ #main #right-side-wrapper::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: -72px;
+    width: 1px;
+    height: 72px;
+    background: #e3e6e9;
+  }
 }
 html:not(.jv-no-polish) #right-side {
   font-size: 14px;
@@ -336,7 +355,7 @@ html:not(.jv-no-polish) #right-side .button-sidebar-wide:hover {
   background: rgba(39, 53, 64, 0.06);
 }
 html:not(.jv-no-polish) #right-side .button-sidebar-wide i {
-  color: #6b7780;
+  color: var(--ic-link-color, #286dc0);
 }
 /* Section headings: small caps labels instead of ruled-off bold titles. */
 html:not(.jv-no-polish) #right-side h2 {
@@ -354,13 +373,47 @@ html:not(.jv-no-polish) #right-side .h2,
 html:not(.jv-no-polish) #right-side .shared-space {
   border: 0;
 }
+/* One rounded frame for the mini calendar (stock draws square inner boxes). */
 html:not(.jv-no-polish) #right-side .mini_month {
   margin-top: 16px;
-  padding: 10px;
+  padding: 4px 6px 6px;
   border: 1px solid #e3e6e9;
   border-radius: 10px;
+}
+html:not(.jv-no-polish) #right-side .mini-cal-header,
+html:not(.jv-no-polish) #right-side table.mini_calendar {
+  border: 0;
 }
 html:not(.jv-no-polish) #right-side .mini-cal-month-and-year {
   font-size: 14px;
   font-weight: 700;
+}
+
+/* ---------- A little colour ---------- */
+
+/* A soft wash of the school's link colour behind the top of every page,
+   fading to white, so pages don't read as flat grey-on-white. */
+html:not(.jv-no-polish) #wrapper {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ic-link-color, #286dc0) 9%, #fff) 0, #fff 280px)
+    no-repeat;
+}
+html:not(.jv-no-polish) .ic-app-nav-toggle-and-crumbs,
+html:not(.jv-no-polish) #breadcrumbs,
+html:not(.jv-no-polish) .ic-app-crumbs {
+  background: transparent;
+}
+
+/* "Immersive Reader" and similar top-bar buttons: quiet outline style. */
+html:not(.jv-no-polish) #immersive_reader_mount_point button,
+html:not(.jv-no-polish) #immersive_reader_mount_point button > span {
+  border-radius: 8px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+}
+html:not(.jv-no-polish) #immersive_reader_mount_point button > span {
+  border: 1px solid #d5dade !important;
+}
+html:not(.jv-no-polish) #immersive_reader_mount_point button:hover > span {
+  background: rgba(39, 53, 64, 0.06) !important;
 }
