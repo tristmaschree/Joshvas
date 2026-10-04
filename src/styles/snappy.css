@@ -1,0 +1,25 @@
+/*
+ * Snappy mode: collapse Canvas / InstUI transitions and animations to ~0.
+ * Durations stay non-zero so transitionend / animationend still fire —
+ * InstUI trays and modals wait on those events to finish opening/closing.
+ * Joshvas's own animated elements opt out with .jv-anim.
+ */
+html:not(.jv-no-snappy) *:not(.jv-anim),
+html:not(.jv-no-snappy) *:not(.jv-anim)::before,
+html:not(.jv-no-snappy) *:not(.jv-anim)::after {
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+/* Keep loading spinners spinning so it's clear something is happening. */
+html:not(.jv-no-snappy) [class*="spinner"],
+html:not(.jv-no-snappy) [class*="Spinner"],
+html:not(.jv-no-snappy) [class*="spinner"] *,
+html:not(.jv-no-snappy) [class*="Spinner"] * {
+  animation-duration: revert !important;
+  animation-iteration-count: revert !important;
+}

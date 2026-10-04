@@ -1,0 +1,178 @@
+/* ---------- Sidebar courses (in Canvas's global nav) ---------- */
+.jv-nav-courses {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 6px;
+}
+.jv-nav-courses__list {
+  display: flex;
+  flex-direction: column;
+  max-height: 42vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+/* Flat chips, centred in the nav like Canvas's own icons. The selected course
+   is marked by a small bar on the nav's left edge rather than a fill or outline. */
+.jv-nav-course {
+  position: relative;
+  display: block;
+  padding: 2px 7px;
+  text-decoration: none !important;
+}
+.jv-nav-course__chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 4px 2px;
+  border-radius: 9px;
+  background: var(--jv-course);
+  color: var(--jv-on, #fff);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-align: center;
+  overflow: hidden;
+}
+.jv-nav-course:hover .jv-nav-course__chip,
+.jv-nav-course:focus-visible .jv-nav-course__chip {
+  filter: brightness(1.18);
+}
+.jv-nav-course.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 25%;
+  bottom: 25%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #fff;
+}
+.jv-nav-course__dept {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+.jv-nav-course__num {
+  opacity: 0.85;
+  font-weight: 700;
+}
+.jv-nav-course__badge {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  box-sizing: border-box;
+  background: var(--ic-brand-global-nav-badge, #fff);
+  color: var(--ic-brand-global-nav-badge-text, #0374b5);
+  box-shadow: 0 0 0 1.5px var(--ic-brand-global-nav-bgd, #0374b5);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+}
+
+/* Tooltip for nav items, styled after Canvas's collapsed-nav tooltips. */
+.jv-tip {
+  position: fixed;
+  z-index: 100002;
+  transform: translateY(-50%);
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ic-link-color, #286dc0) 82%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.jv-tip::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: color-mix(in srgb, var(--ic-link-color, #286dc0) 82%, transparent);
+}
+.jv-tip[hidden] {
+  display: none;
+}
+
+/* ---------- "Due" nav item badge ---------- */
+.jv-nav-due .menu-item-icon-container {
+  position: relative;
+}
+/* Kept inside the nav's width (it's only ~52px when collapsed) and ringed in
+   the nav colour, so the white pill never bleeds into the white page. */
+.jv-nav-badge {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background: var(--ic-brand-global-nav-badge, #fff);
+  color: var(--ic-brand-global-nav-badge-text, #0374b5);
+  box-shadow: 0 0 0 2px var(--ic-brand-global-nav-bgd, #0374b5);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  pointer-events: none;
+}
+.jv-nav-badge[hidden] {
+  display: none;
+}
+
+/* ---------- Dashboard card extras ---------- */
+.jv-card-extra {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px 0;
+  font-size: 12px;
+  line-height: 1.3;
+}
+.jv-card-grade {
+  align-self: flex-start;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #eef4fb;
+  color: #0e68b3;
+  font-weight: 700;
+}
+.jv-card-due {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #273540 !important;
+  text-decoration: none !important;
+}
+.jv-card-due:hover .jv-card-due__title {
+  text-decoration: underline;
+}
+.jv-card-due__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.jv-card-due__when {
+  flex: none;
+  color: #6b7780;
+  font-weight: 700;
+}
+.jv-card-due--none {
+  color: #8b969e !important;
+}

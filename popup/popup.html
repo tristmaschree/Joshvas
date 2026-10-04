@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Joshvas</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon48.png" alt="" width="28" height="28">
+    <div>
+      <h1>Joshvas</h1>
+      <p class="sub">Canvas, but faster</p>
+    </div>
+  </header>
+
+  <form id="settings">
+    <label class="row">
+      <span><strong>Snappy mode</strong><small>Remove slow animations and transitions</small></span>
+      <input type="checkbox" name="snappy">
+    </label>
+    <label class="row">
+      <span><strong>Visual polish</strong><small>Rounded cards, softer buttons, cleaner planner</small></span>
+      <input type="checkbox" name="polish">
+    </label>
+    <label class="row">
+      <span><strong>Preload on hover</strong><small>Course sections, dashboard, calendar &amp; grades</small></span>
+      <select name="preload">
+        <option value="prerender">Prerender</option>
+        <option value="prefetch">Prefetch</option>
+        <option value="off">Off</option>
+      </select>
+    </label>
+    <label class="row">
+      <span><strong>Tree sidebar</strong><small>One wide sidebar with expandable courses</small></span>
+      <input type="checkbox" name="sidebarTree">
+    </label>
+    <label class="row">
+      <span><strong>Courses in sidebar</strong><small>Course chips in the collapsed icon strip</small></span>
+      <input type="checkbox" name="sidebarCourses">
+    </label>
+    <label class="row">
+      <span><strong>Command palette</strong><small><kbd id="mod">⌘</kbd> <kbd>K</kbd> to jump anywhere</small></span>
+      <input type="checkbox" name="palette">
+    </label>
+    <label class="row">
+      <span><strong>Due panel</strong><small>Everything due, across all courses</small></span>
+      <input type="checkbox" name="duePanel">
+    </label>
+    <label class="row">
+      <span><strong>Dashboard card extras</strong><small>Grade and next due item on each card</small></span>
+      <input type="checkbox" name="dashboardCards">
+    </label>
+  </form>
+
+  <footer>
+    <span id="status">Changes apply when you reload Canvas.</span>
+    <button id="clear" type="button">Clear cache</button>
+  </footer>
+
+  <script src="../src/core/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

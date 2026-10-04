@@ -1,0 +1,436 @@
+/*
+ * Tree sidebar: Canvas's icon strip and the per-course menu merged into one
+ * wide, VS Code-style explorer. Active when <html> has .jv-tree (set at
+ * document_start by boot.js, toggled by the collapse arrow at the bottom).
+ * Below 768px Canvas switches to its mobile layout, so we stay out of the way.
+ */
+@media (min-width: 768px) {
+  html.jv-tree {
+    --jv-nav-w: 248px;
+    /* Light theme: white sidebar, the school's nav colour as the accent. */
+    --jv-accent: var(--ic-brand-global-nav-bgd, #0374b5);
+    --jv-nav-fg: #273540;
+    --jv-nav-muted: #6b7780;
+    --jv-nav-line: #e3e6e9;
+    --jv-nav-hover: rgba(39, 53, 64, 0.06);
+    --jv-nav-active: color-mix(in srgb, var(--jv-accent) 10%, transparent);
+    --jv-person: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Ccircle cx='10' cy='10' r='9'/%3E%3Ccircle cx='10' cy='8' r='3'/%3E%3Cpath d='M4.3 16.6c1-2.5 3.1-3.9 5.7-3.9s4.700 1.400 5.700 3.900'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Surface: white, with a divider instead of a colour block ---------- */
+
+  html.jv-tree #header {
+    background: #fff !important;
+    box-shadow: inset -1px 0 0 var(--jv-nav-line);
+  }
+  /* The school logo is drawn white-on-colour. Recolour it to the accent without
+     needing a second image: flatten it to black, then screen the accent over
+     it (black -> accent, the white background stays white). */
+  html.jv-tree #header .ic-app-header__logomark-container {
+    position: relative;
+    isolation: isolate;
+    height: 60px;
+    background: #fff !important;
+    box-shadow: inset -1px 0 0 var(--jv-nav-line);
+  }
+  html.jv-tree #header .ic-app-header__logomark {
+    width: auto;
+    height: 60px;
+    margin-left: 18px;
+    background-position: left center;
+    filter: brightness(0);
+  }
+  html.jv-tree #header .ic-app-header__logomark-container::after {
+    content: "";
+    position: absolute;
+    inset: 0 1px 0 0;
+    background: var(--jv-accent);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  /* ---------- Layout: one wide sidebar, no separate course menu ---------- */
+
+  html.jv-tree #header,
+  html.jv-tree #header .ic-app-header__main-navigation,
+  html.jv-tree #header .ic-app-header__logomark-container,
+  html.jv-tree #header .ic-app-header__secondary-navigation {
+    width: var(--jv-nav-w);
+  }
+  html.jv-tree #wrapper {
+    margin-left: var(--jv-nav-w) !important;
+  }
+  /* The course/group menu now lives in the tree. */
+  html.jv-tree body[class*="context-course_"] #left-side,
+  html.jv-tree body[class*="context-group_"] #left-side,
+  html.jv-tree body[class*="context-course_"] #courseMenuToggle,
+  html.jv-tree body[class*="context-group_"] #courseMenuToggle {
+    display: none !important;
+  }
+  html.jv-tree body[class*="context-course_"] #main,
+  html.jv-tree body[class*="context-group_"] #main {
+    margin-left: 0 !important;
+  }
+  /* Canvas's slide-out trays open from the sidebar's right edge. */
+  html.jv-tree #nav-tray-portal :has(> [role="dialog"]) {
+    left: var(--jv-nav-w) !important;
+  }
+
+  html.jv-tree #header .ic-app-header__main-navigation {
+    /* #header is a flex container, so pin the height explicitly to leave room
+       for the collapse arrow underneath. */
+    flex: none;
+    height: calc(100vh - 45px) !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(39, 53, 64, 0.2) transparent;
+  }
+  html.jv-tree #menu {
+    padding-bottom: 12px;
+  }
+
+  /* ---------- Canvas's own items become rows: icon, then label ---------- */
+
+  html.jv-tree #menu .ic-app-header__menu-list-link {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    height: 30px; /* every row in the sidebar is the same height */
+    padding: 0 12px 0 30px;
+    background: none !important;
+    box-shadow: none !important;
+    outline: none;
+    text-align: left;
+    text-decoration: none;
+  }
+  html.jv-tree #menu .menu-item-icon-container {
+    position: static;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    transform: none !important; /* else it becomes the badge's containing block */
+  }
+  html.jv-tree #menu .menu-item-icon-container svg,
+  html.jv-tree #menu .menu-item-icon-container .ic-avatar {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  /* Some icons (Inbox) sit in a wrapper span whose line box would push them
+     below the label. */
+  html.jv-tree #menu .menu-item-icon-container > span:not(.menu-item__badge):not(.jv-nav-badge) {
+    display: grid;
+    place-items: center;
+    line-height: 0;
+  }
+  html.jv-tree #menu .menu-item-icon-container svg {
+    display: block;
+  }
+  /* External-tool items (e.g. Sign Up) use a bare white <img> as their icon:
+     size it like the others and darken it so it shows on white. */
+  html.jv-tree #menu .ic-app-header__menu-list-link > img {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    object-fit: contain;
+    filter: brightness(0) opacity(0.55);
+  }
+  /* Account: a real photo fills a clean circle; Canvas's default placeholder
+     (a squashed grey blob at this size) becomes a line icon like the rest. */
+  html.jv-tree #menu .ic-avatar {
+    box-sizing: border-box;
+    border: 1px solid var(--jv-nav-line);
+    background: none;
+  }
+  html.jv-tree #menu .ic-avatar img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+  html.jv-tree #menu .ic-avatar:has(img[src*="avatar-50"]) {
+    border: 0;
+    border-radius: 0;
+    background: var(--jv-nav-muted);
+    -webkit-mask: var(--jv-person) center / contain no-repeat;
+    mask: var(--jv-person) center / contain no-repeat;
+  }
+  html.jv-tree #menu .ic-avatar:has(img[src*="avatar-50"]) img {
+    visibility: hidden;
+  }
+  /* In the collapsed strip this label is a hover tooltip; here it's inline. */
+  html.jv-tree #menu .menu-item__text {
+    position: static;
+    flex: 1;
+    min-width: 0;
+    height: auto;
+    margin: 0 !important;
+    padding: 0;
+    overflow: hidden;
+    transform: none;
+    opacity: 1;
+    background: none;
+    color: var(--jv-nav-fg) !important;
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.3;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  html.jv-tree #menu .menu-item__text::before,
+  html.jv-tree #menu .menu-item__text::after {
+    display: none;
+  }
+  html.jv-tree #menu .menu-item__badge,
+  html.jv-tree #menu .jv-nav-badge {
+    position: absolute;
+    top: 50% !important;
+    left: auto !important;
+    right: 12px !important;
+    transform: translateY(-50%);
+    box-shadow: none;
+    background: var(--jv-accent);
+    color: #fff;
+  }
+  html.jv-tree #menu .ic-icon-svg {
+    fill: var(--jv-nav-muted) !important;
+    color: var(--jv-nav-muted);
+  }
+
+
+  /* Hover / selected: a rounded tint, same language as the rest of Joshvas. */
+  html.jv-tree #menu .ic-app-header__menu-list-link::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 1px 6px;
+    border-radius: 8px;
+    background: transparent;
+  }
+  html.jv-tree #menu .ic-app-header__menu-list-link:hover::before {
+    background: var(--jv-nav-hover);
+  }
+  html.jv-tree #menu .ic-app-header__menu-list-item--active .ic-app-header__menu-list-link::before {
+    background: var(--jv-nav-active);
+  }
+  html.jv-tree #menu .ic-app-header__menu-list-link:focus-visible::before {
+    box-shadow: inset 0 0 0 2px var(--jv-accent);
+  }
+  html.jv-tree #menu .ic-app-header__menu-list-item--active .ic-icon-svg {
+    fill: var(--jv-accent) !important;
+    color: var(--jv-accent);
+  }
+  html.jv-tree #menu .ic-app-header__menu-list-item--active .menu-item__text {
+    color: var(--jv-accent) !important;
+    font-weight: 700;
+  }
+  html.jv-tree #menu .jv-tree-top.ic-app-header__menu-list-item--active .menu-item__text {
+    color: var(--jv-nav-fg) !important;
+    font-weight: 400;
+  }
+  html.jv-tree #menu .jv-tree-top.ic-app-header__menu-list-item--active .ic-icon-svg {
+    fill: var(--jv-nav-muted) !important;
+  }
+  /* Courses / Groups are folders: the selected leaf carries the highlight. */
+  html.jv-tree #menu .jv-tree-top.ic-app-header__menu-list-item--active .ic-app-header__menu-list-link:not(:hover)::before {
+    background: transparent;
+  }
+
+  /* ---------- Tree ---------- */
+
+  /* The twisty: ">" closed, rotates to "v" when open. */
+  html.jv-tree .jv-tw {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--jv-nav-muted);
+    transition: transform 140ms ease;
+  }
+  html.jv-tree #menu .ic-app-header__menu-list-link > .jv-tw {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -8px;
+  }
+  html.jv-tree .jv-open > .ic-app-header__menu-list-link > .jv-tw,
+  html.jv-tree .is-open > .jv-tree-row > .jv-tw {
+    transform: rotate(90deg);
+  }
+
+  html.jv-tree .jv-tree-group {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  /* Animated expand/collapse without knowing the content height. */
+  html.jv-tree .jv-tree-kids {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 160ms ease;
+  }
+  html.jv-tree .is-open > .jv-tree-kids {
+    grid-template-rows: 1fr;
+  }
+  html.jv-tree .jv-tree-kids__inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  html.jv-tree :not(.is-open) > .jv-tree-kids > .jv-tree-kids__inner {
+    visibility: hidden;
+    transition: visibility 0s 160ms;
+  }
+
+  html.jv-tree .jv-tree-row,
+  html.jv-tree .jv-tree-leaf {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box; /* width:100% must include the padding, or the pill overflows */
+    width: 100%;
+    height: 30px;
+    margin: 0;
+    padding: 0 12px 0 calc(10px + var(--lvl, 1) * 16px);
+    border: 0;
+    background: none;
+    color: var(--jv-nav-fg) !important;
+    font: inherit;
+    font-size: 13.5px;
+    line-height: 1.3;
+    text-align: left;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+  html.jv-tree .jv-tree-leaf {
+    /* leaves have no twisty: align their text with folder labels */
+    padding-left: calc(32px + var(--lvl, 1) * 16px);
+    color: #47535c !important;
+  }
+  html.jv-tree .jv-tree-row::before,
+  html.jv-tree .jv-tree-leaf::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 1px 6px;
+    border-radius: 8px;
+  }
+  html.jv-tree .jv-tree-row:hover::before,
+  html.jv-tree .jv-tree-leaf:hover::before {
+    background: var(--jv-nav-hover);
+  }
+  html.jv-tree .jv-tree-leaf.is-active {
+    color: var(--jv-accent) !important;
+    font-weight: 700;
+  }
+  html.jv-tree .jv-tree-leaf.is-active::before {
+    background: var(--jv-nav-active);
+  }
+  html.jv-tree .jv-tree-row:focus-visible::before,
+  html.jv-tree .jv-tree-leaf:focus-visible::before {
+    box-shadow: inset 0 0 0 2px var(--jv-accent);
+  }
+  html.jv-tree .jv-tree-row:focus,
+  html.jv-tree .jv-tree-leaf:focus {
+    outline: none;
+  }
+  html.jv-tree .jv-tree-dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--jv-course, var(--jv-nav-muted));
+  }
+  html.jv-tree .jv-tree-label {
+    flex: none;
+    max-width: 100%;
+    overflow: hidden;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  html.jv-tree .jv-tree-leaf .jv-tree-label {
+    flex: 1;
+    min-width: 0;
+    font-weight: inherit;
+  }
+  html.jv-tree .jv-tree-sub {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: #8b969e;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  html.jv-tree .jv-tree-count {
+    flex: none;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
+    background: var(--jv-accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+  }
+  html.jv-tree .jv-tree-note {
+    padding: 4px 12px 4px calc(32px + var(--lvl, 1) * 16px);
+    color: #8b969e;
+    font-size: 12px;
+  }
+
+  /* The chips belong to the collapsed strip. */
+  html.jv-tree .jv-nav-courses {
+    display: none;
+  }
+
+  /* Collapse arrow: left-aligned under the icons, pointing left while open. */
+  html.jv-tree #header .ic-app-header__secondary-navigation {
+    background: #fff;
+    box-shadow: inset -1px 0 0 var(--jv-nav-line), inset 0 1px 0 var(--jv-nav-line);
+  }
+  html.jv-tree #primaryNavToggle {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 30px;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  html.jv-tree #primaryNavToggle .menu-item-icon-container {
+    width: auto;
+    margin: 0;
+  }
+  html.jv-tree #primaryNavToggle svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--jv-nav-muted) !important;
+    transform: rotate(180deg);
+  }
+  html.jv-tree #primaryNavToggle:hover svg {
+    fill: var(--jv-nav-fg) !important;
+  }
+}
+
+/* The tree itself is only for the wide sidebar. */
+html:not(.jv-tree) .jv-tree-group,
+html:not(.jv-tree) .jv-tw {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .jv-tree-group,
+  .jv-tw {
+    display: none;
+  }
+}

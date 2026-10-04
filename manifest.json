@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "Joshvas",
+  "version": "0.4.4",
+  "description": "Quality-of-life upgrades for Canvas: snappier UI, courses in the sidebar, a command palette, and a unified Due panel.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Joshvas settings",
+    "default_popup": "popup/popup.html"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://*.instructure.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.instructure.com/*"
+      ],
+      "css": [
+        "src/styles/snappy.css",
+        "src/styles/polish.css",
+        "src/styles/tree.css"
+      ],
+      "js": [
+        "src/boot.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://*.instructure.com/*"
+      ],
+      "css": [
+        "src/styles/content.css"
+      ],
+      "js": [
+        "src/core/settings.js",
+        "src/core/util.js",
+        "src/core/api.js",
+        "src/core/cache.js",
+        "src/core/data.js",
+        "src/core/nav.js",
+        "src/features/preload.js",
+        "src/features/sidebar-courses.js",
+        "src/features/sidebar-tree.js",
+        "src/features/due-panel.js",
+        "src/features/palette.js",
+        "src/features/dashboard-cards.js",
+        "src/main.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

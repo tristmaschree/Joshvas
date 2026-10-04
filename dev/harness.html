@@ -1,0 +1,85 @@
+<!doctype html>
+<!--
+  Dev harness: a mock Canvas dashboard with stubbed chrome.* and Canvas API,
+  so the content scripts can be exercised without a Canvas login.
+  Serve the repo root (python3 dev/serve.py) and open /dev/harness.html.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Joshvas harness</title>
+  <script>
+    // ?path=/courses/101/assignments pretends to be on that Canvas page; ?strip=1 starts collapsed.
+    const q = new URLSearchParams(location.search);
+    history.replaceState(null, "", q.get("path") || "/");
+    if (!q.get("strip")) document.documentElement.classList.add("jv-tree");
+  </script>
+  <script src="/dev/mock.js"></script>
+  <link rel="stylesheet" href="/src/styles/snappy.css">
+  <link rel="stylesheet" href="/src/styles/polish.css">
+  <link rel="stylesheet" href="/src/styles/tree.css">
+  <link rel="stylesheet" href="/src/styles/content.css">
+  <style>
+    body { margin: 0; font-family: Lato, Helvetica, Arial, sans-serif; display: flex; background: #fff; }
+    :root { --ic-brand-global-nav-bgd: #0f4d92; --ic-brand-global-nav-menu-item__text-color: #fff; }
+    #header { position: fixed; top: 0; bottom: 0; left: 0; display: flex; width: 54px; background: var(--ic-brand-global-nav-bgd); }
+    #wrapper { margin-left: 54px; flex: 1; }
+    .ic-app-header__secondary-navigation { position: absolute; bottom: 0; left: 0; width: 54px; }
+    #primaryNavToggle { display: block; padding: 12px 0; color: #fff; text-align: center; }
+    .ic-app-header__main-navigation { width: 54px; }
+    #menu { list-style: none; margin: 0; padding: 0; }
+    .ic-app-header__menu-list-link { display: block; padding: 8px 0; text-align: center; color: #fff; text-decoration: none; font-size: 12px; }
+    .ic-app-header__menu-list-item--active { background: #fff; }
+    .ic-app-header__menu-list-item--active a { color: #0f4d92; }
+    .menu-item-icon-container { display: inline-block; width: 26px; height: 26px; }
+    .menu-item-icon-container svg { width: 26px; height: 26px; }
+    #content { padding: 24px; display: flex; flex-wrap: wrap; gap: 24px; align-content: flex-start; }
+    .ic-DashboardCard { width: 262px; box-shadow: 0 2px 5px rgba(0,0,0,.3); border-radius: 4px; overflow: hidden; }
+    .ic-DashboardCard__header_hero { height: 146px; }
+    .ic-DashboardCard__header_content { padding: 12px; }
+    .ic-DashboardCard__action-container { padding: 8px 12px 12px; color: #999; }
+  </style>
+</head>
+<body>
+  <header id="header" class="ic-app-header">
+    <div class="ic-app-header__main-navigation">
+    <ul id="menu" class="ic-app-header__menu-list">
+      <li class="ic-app-header__menu-list-item"><a id="global_nav_dashboard_link" class="ic-app-header__menu-list-link" href="/"><div class="menu-item-icon-container"><svg viewBox="0 0 10 10"><rect width="10" height="10" fill="currentColor"/></svg></div><div class="menu-item__text">Dashboard</div></a></li>
+      <li class="ic-app-header__menu-list-item"><a id="global_nav_courses_link" class="ic-app-header__menu-list-link" href="/courses"><div class="menu-item-icon-container"><svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg></div><div class="menu-item__text">Courses</div></a></li>
+      <li class="ic-app-header__menu-list-item"><a id="global_nav_groups_link" class="ic-app-header__menu-list-link" href="/groups"><div class="menu-item-icon-container"><svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg></div><div class="menu-item__text">Groups</div></a></li>
+      <li class="ic-app-header__menu-list-item"><a id="global_nav_calendar_link" class="ic-app-header__menu-list-link" href="/calendar"><div class="menu-item-icon-container"><svg viewBox="0 0 10 10"><rect width="10" height="10" fill="currentColor"/></svg></div><div class="menu-item__text">Calendar</div></a></li>
+      <li class="ic-app-header__menu-list-item"><a id="global_nav_conversations_link" class="ic-app-header__menu-list-link" href="/conversations"><div class="menu-item-icon-container"><svg viewBox="0 0 10 10"><rect width="10" height="10" fill="currentColor"/></svg></div><div class="menu-item__text">Inbox</div></a></li>
+    </ul>
+    </div>
+    <div class="ic-app-header__secondary-navigation"><a id="primaryNavToggle" href="#"><svg viewBox="0 0 10 10" width="16" height="16"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" fill="none"/></svg></a></div>
+  </header>
+  <div id="wrapper"><div id="content"></div></div>
+  <script>
+    for (const c of MOCK.courses) {
+      document.getElementById("content").insertAdjacentHTML("beforeend", `
+        <div class="ic-DashboardCard">
+          <div class="ic-DashboardCard__header">
+            <a class="ic-DashboardCard__link" href="/courses/${c.id}">
+              <div class="ic-DashboardCard__header_hero" style="background:${MOCK.colors["course_" + c.id]}"></div>
+              <div class="ic-DashboardCard__header_content"><strong>${c.name}</strong><div>${c.course_code}</div></div>
+            </a>
+          </div>
+          <nav class="ic-DashboardCard__action-container">[icons]</nav>
+        </div>`);
+    }
+  </script>
+  <script src="/src/core/settings.js"></script>
+  <script src="/src/core/util.js"></script>
+  <script src="/src/core/api.js"></script>
+  <script src="/src/core/cache.js"></script>
+  <script src="/src/core/data.js"></script>
+  <script src="/src/core/nav.js"></script>
+  <script src="/src/features/preload.js"></script>
+  <script src="/src/features/sidebar-courses.js"></script>
+  <script src="/src/features/sidebar-tree.js"></script>
+  <script src="/src/features/due-panel.js"></script>
+  <script src="/src/features/palette.js"></script>
+  <script src="/src/features/dashboard-cards.js"></script>
+  <script src="/src/main.js"></script>
+</body>
+</html>
