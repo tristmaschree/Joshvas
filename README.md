@@ -16,6 +16,8 @@ A Chrome extension that makes Canvas (`*.instructure.com`) faster and nicer to u
 
 Each feature can be toggled from the toolbar popup.
 
+> Built and tested on Yale's Canvas (`yale.instructure.com`) as a student. It should work on other `*.instructure.com` schools, but layouts and course-code formats vary — if something looks off, switch that feature off in the popup.
+
 ## Install (unpacked)
 
 1. Open `chrome://extensions` and turn on **Developer mode**.
