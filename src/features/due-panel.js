@@ -290,15 +290,15 @@ JV.features.due = (() => {
       position: fixed; top: 0; bottom: 0; left: var(--jv-left, 0px);
       width: min(380px, calc(100vw - var(--jv-left, 0px)));
       z-index: 100000; color: var(--fg);
-      /* Frosted glass, kept fairly opaque and only lightly saturated so strong
-         colours behind it show as a soft tint rather than blotches. */
-      background: rgba(255, 255, 255, .8);
-      -webkit-backdrop-filter: blur(24px) saturate(140%); backdrop-filter: blur(24px) saturate(140%);
+      /* Frosted glass: translucent enough that the page visibly blurs through,
+         with a faint inner highlight along the right edge. */
+      background: rgba(255, 255, 255, .62);
+      -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%);
       font-family: LatoWeb, "Lato Extended", Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 13.5px; line-height: 1.3;
       /* Slides out from *under* the sidebar: a divider and soft shadow on the
          right only; the clip stops the shadow spilling left onto the sidebar. */
-      box-shadow: 1px 0 0 var(--line), 12px 0 28px rgba(16, 24, 32, .08);
+      box-shadow: inset -1px 0 0 rgba(255, 255, 255, .6), 1px 0 0 var(--line), 12px 0 28px rgba(16, 24, 32, .1);
       clip-path: inset(0 -60px 0 0);
       display: flex; flex-direction: column;
     }

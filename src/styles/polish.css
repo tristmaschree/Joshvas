@@ -241,10 +241,10 @@ html:not(.jv-no-polish) #nav-tray-portal [role="dialog"] {
 html:not(.jv-no-polish) #nav-tray-portal :has(> [role="dialog"]) {
   /* Frosted like the Due panel, with a divider and soft shadow on the right
      only, so trays read as sliding out from under the sidebar. */
-  background: rgba(255, 255, 255, 0.8) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
-  backdrop-filter: blur(24px) saturate(140%);
-  box-shadow: 1px 0 0 #e3e6e9, 12px 0 28px rgba(16, 24, 32, 0.08);
+  background: rgba(255, 255, 255, 0.62) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.6), 1px 0 0 #e3e6e9, 12px 0 28px rgba(16, 24, 32, 0.1);
   clip-path: inset(0 -60px 0 0);
 }
 /* Dialogs: blur the page behind, glass the window chrome. */
