@@ -169,6 +169,10 @@ JV.features.sidebarTree = (() => {
         const crumb = document.querySelector("#breadcrumbs li:nth-of-type(2)")?.textContent.trim();
         list = [...list, { id: activeId, name: crumb || "This course", short: crumb || "This course", isClass: false }];
       }
+      // Let page styles (e.g. the breadcrumb chip) use the current course's colour.
+      const activeColor = list.find((c) => c.id === activeId)?.color;
+      document.documentElement.classList.toggle("jv-course-color", !!activeColor);
+      if (activeColor) document.documentElement.style.setProperty("--jv-course-color", activeColor);
       inner.replaceChildren(
         ...list.map((c) =>
           folder({

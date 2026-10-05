@@ -358,7 +358,7 @@ html:not(.jv-no-polish) #right-side .button-sidebar-wide i {
   color: var(--ic-link-color, #286dc0);
 }
 /* Section headings: small caps labels instead of ruled-off bold titles. */
-html:not(.jv-no-polish) #right-side h2 {
+html:not(.jv-no-polish) #right-side h2:not(#minical h2) {
   margin: 22px 0 6px;
   padding: 0;
   border: 0;
@@ -389,18 +389,140 @@ html:not(.jv-no-polish) #right-side .mini-cal-month-and-year {
   font-weight: 700;
 }
 
-/* ---------- A little colour ---------- */
+/* ---------- Colour, without tinting the page ---------- */
 
-/* A soft wash of the school's link colour behind the top of every page,
-   fading to white, so pages don't read as flat grey-on-white. */
-html:not(.jv-no-polish) #wrapper {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--ic-link-color, #286dc0) 9%, #fff) 0, #fff 280px)
-    no-repeat;
+/* The page background stays white. Colour comes from small, meaningful
+   elements instead: a tinted tile behind each list item's icon (coloured by
+   item type), a chip for the course in the breadcrumbs, and the accents on
+   headings and icons elsewhere in this file. */
+
+/* Icon tiles on assignment / quiz / module rows. */
+html:not(.jv-no-polish) .ig-row .ig-type-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--jv-tile, #286dc0) 12%, transparent);
+  color: var(--jv-tile, #286dc0) !important;
+}
+html:not(.jv-no-polish) .ig-row .ig-type-icon i {
+  color: inherit !important;
+}
+/* Type colours. Assignments keep the default blue. */
+html:not(.jv-no-polish) .ig-row:has(.ig-type-icon > .icon-quiz) {
+  --jv-tile: #7b3fa0;
+}
+html:not(.jv-no-polish) .ig-row:has(.ig-type-icon > .icon-discussion) {
+  --jv-tile: #0b874b;
+}
+html:not(.jv-no-polish) .ig-row:has(.ig-type-icon > .icon-document) {
+  --jv-tile: #b35c00;
+}
+/* Module rows carry every type's icon in the markup (one shown), so their
+   type comes from the list item's class instead. */
+html:not(.jv-no-polish) .context_module_item .ig-row {
+  --jv-tile: #286dc0;
+}
+html:not(.jv-no-polish) .context_module_item:is(.quiz, .lightweight-quiz, .lti-quiz) .ig-row {
+  --jv-tile: #7b3fa0;
+}
+html:not(.jv-no-polish) .context_module_item.discussion_topic .ig-row {
+  --jv-tile: #0b874b;
+}
+html:not(.jv-no-polish) .context_module_item.wiki_page .ig-row {
+  --jv-tile: #b35c00;
+}
+html:not(.jv-no-polish) .context_module_item:is(.external_url, .context_external_tool) .ig-row {
+  --jv-tile: #0a7d86;
+}
+html:not(.jv-no-polish) .context_module_item.attachment .ig-row {
+  --jv-tile: #5b6770;
+}
+
+/* Breadcrumbs on course pages: the course becomes a tinted chip, with a dot
+   in the course's own colour when the tree sidebar knows it. */
+html:not(.jv-no-polish) body[class*="context-course_"] #breadcrumbs li:nth-of-type(2) a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ic-link-color, #286dc0) 10%, transparent);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+html.jv-course-color:not(.jv-no-polish) body[class*="context-course_"] #breadcrumbs li:nth-of-type(2) a::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--jv-course-color);
 }
 html:not(.jv-no-polish) .ic-app-nav-toggle-and-crumbs,
 html:not(.jv-no-polish) #breadcrumbs,
 html:not(.jv-no-polish) .ic-app-crumbs {
   background: transparent;
+}
+
+/* ---------- Leftover old-style controls ---------- */
+
+/* Group headers on Quizzes use a raw <button> with browser-default chrome. */
+html:not(.jv-no-polish) .ig-header .element_toggler {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #273540;
+  font: inherit;
+  font-weight: 700;
+}
+/* Plain grey buttons become white outlined ones; coloured buttons are left alone. */
+html:not(.jv-no-polish)
+  .btn:not(.btn-primary):not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-link):not(.button-sidebar-wide) {
+  border: 1px solid #d5dade;
+  background: #fff;
+  box-shadow: none;
+  color: #273540;
+  text-shadow: none;
+}
+html:not(.jv-no-polish)
+  .btn:not(.btn-primary):not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-link):not(.button-sidebar-wide):hover {
+  background: #f5f7f8;
+}
+/* Zebra-striped tables (People) become plain rows with hairlines and a hover. */
+html:not(.jv-no-polish) #content .ic-Table--striped tbody tr {
+  background: none !important;
+}
+html:not(.jv-no-polish) #content .ic-Table--striped :is(td, th) {
+  border-bottom: 1px solid #eceef0;
+}
+html:not(.jv-no-polish) #content .ic-Table--striped tbody tr:hover {
+  background: #f7f9fb !important;
+}
+/* Where a page still has its own left menu (Account pages, or the tree
+   sidebar switched off), give it the same rows as the tree. */
+html:not(.jv-no-polish) #section-tabs a {
+  margin: 1px 0;
+  padding: 6px 10px;
+  border: 0 !important;
+  border-radius: 8px;
+  color: #47535c;
+  font-size: 14px;
+  text-decoration: none;
+}
+html:not(.jv-no-polish) #section-tabs a:hover {
+  background: rgba(39, 53, 64, 0.06);
+}
+html:not(.jv-no-polish) #section-tabs a.active {
+  background: color-mix(in srgb, var(--ic-brand-global-nav-bgd, #0374b5) 10%, transparent);
+  color: var(--ic-brand-global-nav-bgd, #0374b5);
+  font-weight: 700;
 }
 
 /* "Immersive Reader" and similar top-bar buttons: quiet outline style. */
