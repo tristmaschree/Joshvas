@@ -207,7 +207,7 @@
   }
 
 
-  /* Hover / selected: a rounded tint, same language as the rest of Joshvas. */
+  /* Hover / selected: a rounded tint, same language as the rest of Easel. */
   html.jv-tree #menu .ic-app-header__menu-list-link::before {
     content: "";
     position: absolute;

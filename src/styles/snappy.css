@@ -2,7 +2,7 @@
  * Snappy mode: collapse Canvas / InstUI transitions and animations to ~0.
  * Durations stay non-zero so transitionend / animationend still fire —
  * InstUI trays and modals wait on those events to finish opening/closing.
- * Joshvas's own animated elements opt out with .jv-anim.
+ * Easel's own animated elements opt out with .jv-anim.
  */
 html:not(.jv-no-snappy) *:not(.jv-anim),
 html:not(.jv-no-snappy) *:not(.jv-anim)::before,

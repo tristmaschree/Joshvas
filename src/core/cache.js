@@ -36,7 +36,7 @@ JV.cache = (() => {
     if (Date.now() - entry.t > maxAge) {
       refresh(key, fetcher)
         .then((fresh) => onFresh && onFresh(fresh))
-        .catch((e) => console.warn("[Joshvas] refresh failed", key, e));
+        .catch((e) => console.warn("[Easel] refresh failed", key, e));
     }
     return entry.data;
   }

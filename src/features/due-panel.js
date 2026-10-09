@@ -162,7 +162,7 @@ JV.features.due = (() => {
       const saved = await JV.data.plannerItems();
       if (saved) items = saved;
     } catch (e) {
-      console.warn("[Joshvas] mark done failed", e);
+      console.warn("[Easel] mark done failed", e);
       items = items.map((x) => (x.key === it.key ? { ...x, done: it.done } : x));
     }
     update();

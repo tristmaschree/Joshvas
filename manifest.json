@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Joshvas",
-  "version": "0.4.7",
+  "name": "Easel",
+  "version": "0.5.0",
   "description": "Quality-of-life upgrades for Canvas: snappier UI, courses in the sidebar, a command palette, and a unified Due panel.",
   "icons": {
     "16": "icons/icon16.png",
@@ -9,7 +9,7 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "Joshvas settings",
+    "default_title": "Easel settings",
     "default_popup": "popup/popup.html"
   },
   "permissions": [
