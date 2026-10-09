@@ -4,7 +4,7 @@
 
   const settings = await JV.loadSettings();
   const f = JV.features;
-  const run = (name, fn) => Promise.resolve().then(fn).catch((e) => console.warn(`[Joshvas] ${name} failed`, e));
+  const run = (name, fn) => Promise.resolve().then(fn).catch((e) => console.warn(`[Easel] ${name} failed`, e));
 
   run("preload", () => f.preload.init(settings));
   if (settings.sidebarCourses) run("sidebarCourses", () => f.sidebarCourses.init());
